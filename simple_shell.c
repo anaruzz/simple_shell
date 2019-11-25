@@ -7,22 +7,27 @@
 #include <sys/stat.h>
 #define BUFFER_LEN 1024
 
-
+/**
+ * concat_all - concatenate two strings
+ * @s1: string
+ * @s2: string
+ *Return: string
+ */
 char *concat_all(char *s1, char *s2)
 {
 	char *result = NULL;
 	int l1 = 0, l2 = 0, i = 0, k = 0;
 
-for(l1 = 0; s1[l1]; l1++)
+for (l1 = 0; s1[l1]; l1++)
 ;
 
-for(l2 = 0; s2[l2]; l2++)
+for (l2 = 0; s2[l2]; l2++)
 ;
 
 
 	result = malloc(sizeof(char) * (l1 + l2 + 1));
 	if (!result)
-		return (0);
+		return (NULL);
 
 	for (i = 0; s1[i]; i++)
 		result[i] = s1[i];
@@ -35,10 +40,16 @@ for(l2 = 0; s2[l2]; l2++)
 	result[k] = '\0';
 
 	return (result);
+	free(result);
 }
 
 
 
+/**
+ * find_path - find the path of the command
+ * @av: the command to look for its path
+ *Return: string: full path of the command
+ */
 char *find_path(char *av)
 {
 char *path = NULL, *token = NULL, *cpath = NULL;
@@ -49,11 +60,13 @@ path = getenv("PATH");
 for (len = 0; path[len]; len++)
 ;
 
-cpath = malloc(sizeof(char) * len +1);
+cpath = malloc(sizeof(char) * len + 1);
 
 for (i = 0; path[i]; i++)
 cpath[i] = path[i];
 cpath[i] = '\0';
+
+
 token = strtok(cpath, ":");
 token = concat_all(token, "/");
 token = concat_all(token, av);
@@ -66,7 +79,7 @@ while (token != NULL)
     token = concat_all(token, "/");
   token = concat_all(token, av);
   }
-	free(cpath);
+
 	if (token == NULL)
 	  return (NULL);
   return (NULL);
@@ -104,58 +117,58 @@ void tokenize(char *line, char **argvv, int bufsize)
 	argvv[i] = '\0';
 }
 
-void helpsection()                                                                
-{                                                                                 
-	puts("\n*** SHELL HELP builtins*** "                                      
-			"\n-These shell commands are defined internally"          
-			"\n-Use the shell at your own risk..."                    
-			"\nList of Commands supported:"                           
-			"\n>cd"                                                   
-			"\n>ls"                                                   
-			"\n>exit"                                                 
-			"\n>env"                                                  
-			"\n>all other general commands available in UNIX shell"   
-			"\n>pipe handling"                                        
-			"\n>improper space handling");                            
-	return;                                                                   
-}                                                                                 
-/* Function to execute builtin commands */                                        
-int builtins(char** argvv)                                                           
-{                                                                                 
-	int i, k = 0;                                                             
-	char* cm[4];                                                              
-	char* username;                                                           
-	cm[0] = "exit";                                                           
-	cm[1] = "cd";                                                             
-	cm[2] = "help";                                                           
-	cm[3] = "env";                                                            
-	for (i = 0; i < 4; i++) {                                                 
-		if (strcmp(argvv[0], cm[i]) == 0) {                                  
-			k = i + 1;                                                
-			break;                                                    
-		}                                                                 
-	}                                                                         
-	switch (k) {                                                              
-		case 1:                                                           
-			printf("\nGoodbye\n");                                    
-			exit(0);                                                  
-		case 2:                                                           
-			chdir(argvv[1]);                                             
-			return 1;                                                 
-		case 3:                                                           
-			helpsection();                                            
-			return 1;                                                 
-		case 4:                                                           
-			username = getenv("USER");                                
-			printf("\nHello %s.\nMind that this is "                  
-					"not a place to play around."             
-					"\nUse help to know more..\n", username); 
-			return 1;                                                 
-		default:                                                          
-			break;                                                    
-	}                                                                         
-	return 0;                                                                 
-}                                                                                 
+void helpsection()
+{
+	puts("\n*** SHELL HELP builtins*** "
+			"\n-These shell commands are defined internally"
+			"\n-Use the shell at your own risk..."
+			"\nList of Commands supported:"
+			"\n>cd"
+			"\n>ls"
+			"\n>exit"
+			"\n>env"
+			"\n>all other general commands available in UNIX shell"
+			"\n>pipe handling"
+			"\n>improper space handling");
+	return;
+}
+/* Function to execute builtin commands */
+int builtins(char** argvv)
+{
+	int i, k = 0;
+	char* cm[4];
+	char* username;
+	cm[0] = "exit";
+	cm[1] = "cd";
+	cm[2] = "help";
+	cm[3] = "env";
+	for (i = 0; i < 4; i++) {
+		if (strcmp(argvv[0], cm[i]) == 0) {
+			k = i + 1;
+			break;
+		}
+	}
+	switch (k) {
+		case 1:
+			printf("\nGoodbye\n");
+			exit(0);
+		case 2:
+			chdir(argvv[1]);
+			return 1;
+		case 3:
+			helpsection();
+			return 1;
+		case 4:
+			username = getenv("USER");
+			printf("\nHello %s.\nMind that this is "
+					"not a place to play around."
+					"\nUse help to know more..\n", username);
+			return 1;
+		default:
+			break;
+	}
+	return 0;
+}
 
 
 /**
@@ -179,7 +192,7 @@ int main(void)
 	{
 		printf("$ ");
 
-		if ((read = getline(&line, &length, stdin))== EOF)
+		if ((read = getline(&line, &length, stdin)) == EOF)
 		{
 			printf("\n");
 			exit(0);
@@ -201,13 +214,13 @@ int main(void)
 
 if ((argvv[0] = find_path(argvv[0])) == NULL)
 {
-	fprintf(stderr, "Command not found\n");
+	perror("command: not found\n");
 	exit(127);
 }
+
 if (builtins(argvv))
 	return 0;
 
-	
 		pid = fork();
 		if (pid == 0)
 		{
@@ -230,22 +243,3 @@ exit(-1);
 
 	return (0);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
