@@ -11,7 +11,7 @@
 char *concat_all(char *s1, char *s2)
 {
 	char *result;
-	int l1, l2, l3, i, k;
+	int l1, l2, i, k;
 
 for(l1 = 0; s1[l1]; l1++)
 ;
@@ -42,7 +42,7 @@ for(l2 = 0; s2[l2]; l2++)
 char *find_path(char *av)
 {
 char *path, *token, *cpath;
-int i, j, len = 0;
+int i, len = 0;
 struct stat sfile;
 
 path = getenv("PATH");
@@ -50,6 +50,7 @@ for (len = 0; path[len]; len++)
 ;
 
 cpath = malloc(sizeof(char) * len +1);
+
 for (i = 0; path[i]; i++)
 cpath[i] = path[i];
 cpath[i] = '\0';
@@ -58,21 +59,19 @@ cpath[i] = '\0';
   token = strtok(cpath, ":");
 token = concat_all(token, "/");
 token = concat_all(token, av);
+
   while (token != NULL)
   {
     if (stat(token, &sfile) == 0)
-    {
+
 			return (token);
-      break;
-    }
+
     token = strtok(NULL, ":");
     token = concat_all(token, "/");
   token = concat_all(token, av);
   }
 
-
-free(cpath);
-  return (0);
+  return (NULL);
 }
 
 /**
@@ -114,10 +113,11 @@ void tokenize(char *line, char **argvv, int bufsize)
  */
 int main(void)
 {
-	int bufsize = BUFFER_LEN, i, j, pid, read;
+	int bufsize = BUFFER_LEN, pid, read;
 	char **argvv = malloc(sizeof(char) * bufsize);
-	char *token, *line;
+	char *line;
 	size_t length = 0;
+
 
 
 	if (!argvv)
@@ -128,8 +128,8 @@ int main(void)
 	while (1)
 	{
 		printf("$ ");
-		read = getline(&line, &length, stdin);
-		if (read == EOF)
+
+		if ((read = getline(&line, &length, stdin))== EOF)
 		{
 			printf("\n");
 			exit(0);
@@ -149,13 +149,11 @@ int main(void)
 //if it's not a builtin or an alias
 //look for path
 
-if (find_path(argvv[0]) == NULL)
+if ((argvv[0] = find_path(argvv[0])) == NULL)
 {
 	fprintf(stderr, "Command not found\n");
+	exit(127);
 }
-else
-argvv[0] = find_path(argvv[0]);
-
 
 		pid = fork();
 		if (pid == 0)
