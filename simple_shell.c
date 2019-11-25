@@ -10,8 +10,8 @@
 
 char *concat_all(char *s1, char *s2)
 {
-	char *result;
-	int l1, l2, i, k;
+	char *result = NULL;
+	int l1 = 0, l2 = 0, i = 0, k = 0;
 
 for(l1 = 0; s1[l1]; l1++)
 ;
@@ -20,7 +20,7 @@ for(l2 = 0; s2[l2]; l2++)
 ;
 
 
-	result = malloc(l1 + l2 + 1);
+	result = malloc(sizeof(char) * (l1 + l2 + 1));
 	if (!result)
 		return (0);
 
@@ -41,8 +41,8 @@ for(l2 = 0; s2[l2]; l2++)
 
 char *find_path(char *av)
 {
-char *path, *token, *cpath;
-int i, len = 0;
+char *path = NULL, *token = NULL, *cpath = NULL;
+int i = 0, len = 0;
 struct stat sfile;
 
 path = getenv("PATH");
@@ -63,14 +63,15 @@ token = concat_all(token, av);
   while (token != NULL)
   {
     if (stat(token, &sfile) == 0)
-
-			return (token);
+		return (token);
 
     token = strtok(NULL, ":");
     token = concat_all(token, "/");
   token = concat_all(token, av);
   }
-
+	free(cpath);
+	if (token == NULL)
+	  return (NULL);
   return (NULL);
 }
 
@@ -83,7 +84,7 @@ token = concat_all(token, av);
  */
 void tokenize(char *line, char **argvv, int bufsize)
 {
-	char *token;
+	char *token = NULL;
 	int	i = 0;
 
 	token = strtok(line, " ");
@@ -98,7 +99,7 @@ void tokenize(char *line, char **argvv, int bufsize)
 			argvv = realloc(argvv, bufsize * sizeof(char *));
 			if (!argvv)
 			{
-				fprintf(stderr, "shell: Allocation error!\n");
+				perror("tokenize fail");
 				exit(EXIT_FAILURE);
 			}
 		}
@@ -113,16 +114,14 @@ void tokenize(char *line, char **argvv, int bufsize)
  */
 int main(void)
 {
-	int bufsize = BUFFER_LEN, pid, read;
+	int bufsize = BUFFER_LEN, pid = 0, read;
 	char **argvv = malloc(sizeof(char) * bufsize);
-	char *line;
+	char *line = NULL;
 	size_t length = 0;
-
-
 
 	if (!argvv)
 	{
-		fprintf(stderr, "lsh: allocation error\n");
+		perror("failed to allocate memory for tokens\n");
 		exit(EXIT_FAILURE);
 	}
 	while (1)
@@ -159,12 +158,21 @@ if ((argvv[0] = find_path(argvv[0])) == NULL)
 		if (pid == 0)
 		{
 			if (execve(argvv[0], argvv, NULL) == -1)
-			fprintf(stderr, "Child process could not do execve\n");
+		    {
+					perror("hsh");
+					return (0);
+				}
 		}
 		else if (pid == -1)
-			fprintf(stderr, "Child process does not exit\n");
+		{
+			perror("hsh error - child is -1");
+exit(-1);
+}
 		else
 			wait(NULL);
 	}
+
+	free(argvv);
+
 	return (0);
 }
