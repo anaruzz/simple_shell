@@ -146,8 +146,8 @@ int main(void)
 			line[length - 1] = '\0';
 
 		tokenize(line, argvv, bufsize);
-//if it's not a builtin or an alias
-//look for path
+/*if it's not a builtin or an alias*/
+/*look for path*/
 
 if ((argvv[0] = find_path(argvv[0])) == NULL)
 {
