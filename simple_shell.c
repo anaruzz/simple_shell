@@ -4,7 +4,76 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 #define BUFFER_LEN 1024
+
+
+char *concat_all(char *s1, char *s2)
+{
+	char *result;
+	int l1, l2, l3, i, k;
+
+for(l1 = 0; s1[l1]; l1++)
+;
+
+for(l2 = 0; s2[l2]; l2++)
+;
+
+
+	result = malloc(l1 + l2 + 1);
+	if (!result)
+		return (0);
+
+	for (i = 0; s1[i]; i++)
+		result[i] = s1[i];
+	k = i;
+
+	for (i = 0; s2[i]; i++)
+		result[k + i] = s2[i];
+	k = k + i;
+
+	result[k] = '\0';
+
+	return (result);
+}
+
+
+
+char *find_path(char *av)
+{
+char *path, *token, *cpath;
+int i, j, len = 0;
+struct stat sfile;
+
+path = getenv("PATH");
+for (len = 0; path[len]; len++)
+;
+
+cpath = malloc(sizeof(char) * len +1);
+for (i = 0; path[i]; i++)
+cpath[i] = path[i];
+cpath[i] = '\0';
+
+
+  token = strtok(cpath, ":");
+token = concat_all(token, "/");
+token = concat_all(token, av);
+  while (token != NULL)
+  {
+    if (stat(token, &sfile) == 0)
+    {
+			return (token);
+      break;
+    }
+    token = strtok(NULL, ":");
+    token = concat_all(token, "/");
+  token = concat_all(token, av);
+  }
+
+
+free(cpath);
+  return (0);
+}
 
 /**
  * tokenize - parse the input string
@@ -45,10 +114,11 @@ void tokenize(char *line, char **argvv, int bufsize)
  */
 int main(void)
 {
-	int bufsize = BUFFER_LEN, i, pid, read;
+	int bufsize = BUFFER_LEN, i, j, pid, read;
 	char **argvv = malloc(sizeof(char) * bufsize);
 	char *token, *line;
 	size_t length = 0;
+
 
 	if (!argvv)
 	{
@@ -76,6 +146,16 @@ int main(void)
 			line[length - 1] = '\0';
 
 		tokenize(line, argvv, bufsize);
+//if it's not a builtin or an alias
+//look for path
+
+if (find_path(argvv[0]) == NULL)
+{
+	fprintf(stderr, "Command not found\n");
+}
+else
+argvv[0] = find_path(argvv[0]);
+
 
 		pid = fork();
 		if (pid == 0)
