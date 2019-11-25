@@ -79,8 +79,7 @@ int main(void)
 			wait(NULL);
 		}
 
-		/*if(getcwd(*argvv,sizeof(argvv)) == NULL)*/
-			/*perror("getcwd(): error\n");*/
+	
 
 	}
 	return (0);
