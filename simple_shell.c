@@ -24,7 +24,6 @@ for (l1 = 0; s1[l1]; l1++)
 for (l2 = 0; s2[l2]; l2++)
 ;
 
-
 	result = malloc(sizeof(char) * (l1 + l2 + 1));
 	if (!result)
 		return (NULL);
@@ -40,7 +39,6 @@ for (l2 = 0; s2[l2]; l2++)
 	result[k] = '\0';
 
 	return (result);
-	free(result);
 }
 
 
@@ -67,6 +65,7 @@ cpath[i] = path[i];
 cpath[i] = '\0';
 
 
+
 token = strtok(cpath, ":");
 token = concat_all(token, "/");
 token = concat_all(token, av);
@@ -75,14 +74,17 @@ while (token != NULL)
     if (stat(token, &sfile) == 0)
 		return (token);
 
-    token = strtok(NULL, ":");
-    token = concat_all(token, "/");
+	token = strtok(NULL, ":");
+	if (token != NULL)
+	{
+  token = concat_all(token, "/");
   token = concat_all(token, av);
-  }
+	printf("%s\n", token);
+}
 
-	if (token == NULL)
-	  return (NULL);
-  return (NULL);
+}
+
+  return (av);
 }
 
 /**
@@ -212,14 +214,16 @@ int main(void)
 /*if it's not a builtin or an alias*/
 /*look for path*/
 
-if ((argvv[0] = find_path(argvv[0])) == NULL)
-{
-	perror("command: not found\n");
-	exit(127);
-}
+// if (find_path(argvv[0]) == NULL)
+// {
+// 	perror("command: not found\n");
+// 	exit(127);
+// }
+// else
+argvv[0] = find_path(argvv[0]);
 
-if (builtins(argvv))
-	return 0;
+// if (builtins(argvv))
+// 	return 0;
 
 		pid = fork();
 		if (pid == 0)
