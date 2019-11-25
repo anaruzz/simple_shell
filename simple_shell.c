@@ -54,13 +54,10 @@ cpath = malloc(sizeof(char) * len +1);
 for (i = 0; path[i]; i++)
 cpath[i] = path[i];
 cpath[i] = '\0';
-
-
-  token = strtok(cpath, ":");
+token = strtok(cpath, ":");
 token = concat_all(token, "/");
 token = concat_all(token, av);
-
-  while (token != NULL)
+while (token != NULL)
   {
     if (stat(token, &sfile) == 0)
 		return (token);
@@ -106,6 +103,60 @@ void tokenize(char *line, char **argvv, int bufsize)
 	}
 	argvv[i] = '\0';
 }
+
+void helpsection()                                                                
+{                                                                                 
+	puts("\n*** SHELL HELP builtins*** "                                      
+			"\n-These shell commands are defined internally"          
+			"\n-Use the shell at your own risk..."                    
+			"\nList of Commands supported:"                           
+			"\n>cd"                                                   
+			"\n>ls"                                                   
+			"\n>exit"                                                 
+			"\n>env"                                                  
+			"\n>all other general commands available in UNIX shell"   
+			"\n>pipe handling"                                        
+			"\n>improper space handling");                            
+	return;                                                                   
+}                                                                                 
+/* Function to execute builtin commands */                                        
+int builtins(char** argvv)                                                           
+{                                                                                 
+	int i, k = 0;                                                             
+	char* cm[4];                                                              
+	char* username;                                                           
+	cm[0] = "exit";                                                           
+	cm[1] = "cd";                                                             
+	cm[2] = "help";                                                           
+	cm[3] = "env";                                                            
+	for (i = 0; i < 4; i++) {                                                 
+		if (strcmp(argvv[0], cm[i]) == 0) {                                  
+			k = i + 1;                                                
+			break;                                                    
+		}                                                                 
+	}                                                                         
+	switch (k) {                                                              
+		case 1:                                                           
+			printf("\nGoodbye\n");                                    
+			exit(0);                                                  
+		case 2:                                                           
+			chdir(argvv[1]);                                             
+			return 1;                                                 
+		case 3:                                                           
+			helpsection();                                            
+			return 1;                                                 
+		case 4:                                                           
+			username = getenv("USER");                                
+			printf("\nHello %s.\nMind that this is "                  
+					"not a place to play around."             
+					"\nUse help to know more..\n", username); 
+			return 1;                                                 
+		default:                                                          
+			break;                                                    
+	}                                                                         
+	return 0;                                                                 
+}                                                                                 
+
 
 /**
  *main - main program for the shell project
@@ -153,7 +204,10 @@ if ((argvv[0] = find_path(argvv[0])) == NULL)
 	fprintf(stderr, "Command not found\n");
 	exit(127);
 }
+if (builtins(argvv))
+	return 0;
 
+	
 		pid = fork();
 		if (pid == 0)
 		{
@@ -176,3 +230,22 @@ exit(-1);
 
 	return (0);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
