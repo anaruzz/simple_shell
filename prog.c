@@ -270,8 +270,9 @@ void __exit (char **argvv)
 
 
 /**
-  *
-  *
+  *comments - handle the shell comments 
+  *@argvv: array of string
+  *Return: void
   */
 void comments(char **argvv)
 {
