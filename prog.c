@@ -1,46 +1,46 @@
-#include <stdio.h>                              
-#include <stdlib.h>                             
-#include <string.h>                             
-#include <unistd.h>                             
-#include <sys/types.h>                          
-#include <sys/wait.h>                           
-#include <sys/stat.h>   
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <sys/stat.h>
 #include "shell.h"
-#define BUFFER_LEN 1024                         
 
-/**                                             
- * concat_all - concatenate two strings          
- * @s1: string                                   
- * @s2: string                                   
- *Return: string                                 
- */                                              
-char *concat_all(char *s1, char *s2)            
-{                                               
-	char *result = NULL;                            
-	int l1 = 0, l2 = 0, i = 0, k = 0;               
 
-	for (l1 = 0; s1[l1]; l1++)                      
-		;                                               
+/**
+ * concat_all - concatenate two strings
+ * @s1: string
+ * @s2: string
+ *Return: string
+ */
+char *concat_all(char *s1, char *s2)
+{
+	char *result = NULL;
+	int l1 = 0, l2 = 0, i = 0, k = 0;
 
-	for (l2 = 0; s2[l2]; l2++)                      
-		;                                               
+	for (l1 = 0; s1[l1]; l1++)
+		;
 
-	result = malloc(sizeof(char) * (l1 + l2 + 1));  
-	if (!result)                                    
-		return (NULL);                          
+	for (l2 = 0; s2[l2]; l2++)
+		;
 
-	for (i = 0; s1[i]; i++)                         
-		result[i] = s1[i];                      
-	k = i;                                          
+	result = malloc(sizeof(char) * (l1 + l2 + 1));
+	if (!result)
+		return (NULL);
 
-	for (i = 0; s2[i]; i++)                         
-		result[k + i] = s2[i];                  
-	k = k + i;                                      
+	for (i = 0; s1[i]; i++)
+		result[i] = s1[i];
+	k = i;
 
-	result[k] = '\0';                               
+	for (i = 0; s2[i]; i++)
+		result[k + i] = s2[i];
+	k = k + i;
 
-	return (result);                                
-}                                               
+	result[k] = '\0';
+
+	return (result);
+}
 
 
 
@@ -77,7 +77,7 @@ char *find_path(char *av)
 	{
 		if (stat(token, &sfile) == 0)
 			return (token);
-
+free(token);
 		token = strtok(NULL, ":");
 		if (token != NULL)
 		{
@@ -86,68 +86,69 @@ char *find_path(char *av)
 		}
 
 	}
-
+free(token);
+free(cpath);
 	return (NULL);
 }
 
 
 
 
-/**                                                                          
- * tokenize - parse the input string                                          
- * @line: string                                                              
- * @argvv: array of strings to fill                                           
- * @bufsize: size of buffer for allocation                                    
- *Return: void                                                                
- */                                                                           
-void tokenize(char *line, char **argvv, int bufsize)                         
-{                                                                            
-	char *token = NULL;                                                          
-	int     i = 0;                                                               
+/**
+ * tokenize - parse the input string
+ * @line: string
+ * @argvv: array of strings to fill
+ * @bufsize: size of buffer for allocation
+ *Return: void
+ */
+void tokenize(char *line, char **argvv, int bufsize)
+{
+	char *token = NULL;
+	int     i = 0;
 
-	token = strtok(line, " ");                                                   
-	while (token != NULL)                                                        
-	{                                                                            
-		argvv[i] = token;                                                    
-		token = strtok(NULL, " ");                                           
-		i++;                                                                 
-		if (i >= bufsize)                                                    
-		{                                                                    
-			bufsize += BUFFER_LEN;                                       
-			argvv = realloc(argvv, bufsize * sizeof(char *));            
-			if (!argvv)                                                  
-			{                                                            
-				perror("tokenize fail");                             
-				exit(EXIT_FAILURE);                                  
-			}                                                            
-		}                                                                    
-	}                                                                            
-	argvv[i] = '\0';                                                             
-}                                                                            
+	token = strtok(line, " ");
+	while (token != NULL)
+	{
+		argvv[i] = token;
+		token = strtok(NULL, " ");
+		i++;
+		if (i >= bufsize)
+		{
+			bufsize += BUFFER_LEN;
+			argvv = realloc(argvv, bufsize * sizeof(char *));
+			if (!argvv)
+			{
+				perror("tokenize fail");
+				exit(EXIT_FAILURE);
+			}
+		}
+	}
+	argvv[i] = '\0';
+}
 
-/**                                                                          
- * check_builtin - check if the string passed is a builtin                    
- * @argvv[0]: string to check                                                 
- *Return: -1 on falure & >= 1 on success                                      
- */                                                                           
-int check_builtin(char *argvv)                                               
-{                                                                            
-	int i = 0;                                                                   
-	char *cm[4];                                                                 
+/**
+ * check_builtin - check if the string passed is a builtin
+ * @argvv[0]: string to check
+ *Return: -1 on falure & >= 1 on success
+ */
+int check_builtin(char *argvv)
+{
+	int i = 0;
+	char *cm[4];
 
-	cm[0] = "exit";                                                              
-	cm[1] = "cd";                                                                
-	cm[2] = "help";                                                              
-	cm[3] = "env";                                                               
-	while (i < 4)                                                                
-	{                                                                            
-		if (strcmp(argvv, cm[i]) == 0)                                       
-			return (i + 1);                                                      
-		else                                                                 
-			i++;                                                                 
-	}                                                                            
-	return (-1);                                                                 
-}                                                                            
+	cm[0] = "exit";
+	cm[1] = "cd";
+	cm[2] = "help";
+	cm[3] = "env";
+	while (i < 4)
+	{
+		if (strcmp(argvv, cm[i]) == 0)
+			return (i + 1);
+		else
+			i++;
+	}
+	return (-1);
+}
 
 
 
@@ -199,6 +200,20 @@ void change_dir (char **argvv)
 	setenv("PWD", pth, 1);
 }
 
+/**
+  * __exit - exit with status given in arguments
+  * @argvv:array of strings to execute builtin
+  *Return: Void
+ */
+void __exit (char **argvv)
+{
+	if (argvv[1] == NULL)
+		exit(0);
+	else
+		exit(atoi(argvv[1]));
+}
+
+
 /* Function to execute builtin */
 /**
  * builtins - execute builtins
@@ -211,7 +226,7 @@ void builtins(char **argvv, int i)
 	switch (i)
 	{
 		case 1:
-			exit(atoi(argvv[1]));
+			__exit(argvv);
 			break;
 		case 2:
 			change_dir(argvv);
@@ -255,22 +270,10 @@ void execute(char **argvv)
 }
 
 
-/**
-  * __exit - exit with status given in arguments
-  * @argvv:array of strings to execute builtin
-  *Return: Void
- */
-void __exit (char **argvv)
-{
-	if (argvv[1] == NULL)
-		exit(0);
-	else
-		exit(atoi(argvv[1]));
-}
 
 
 /**
-  *comments - handle the shell comments 
+  *comments - handle the shell comments
   *@argvv: array of string
   *Return: void
   */
@@ -280,5 +283,3 @@ char j[10] = "echo $$ #";
 if (strcmp (j, *argvv) == 0)
 	printf("5114");
 }
-
-

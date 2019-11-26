@@ -7,9 +7,9 @@
 #include <sys/stat.h>
 #include <signal.h>
 #include "shell.h"
-#define BUFFER_LEN 1024
 
-	
+
+
 
 /**
 *main - main program for the shell project
