@@ -120,17 +120,7 @@ void tokenize(char *line, char **argvv, int bufsize)
 
 void helpsection()
 {
-	puts("\n*** SHELL HELP builtins*** "
-			"\n-These shell commands are defined internally"
-			"\n-Use the shell at your own risk..."
-			"\nList of Commands supported:"
-			"\n>cd"
-			"\n>ls"
-			"\n>exit"
-			"\n>env"
-			"\n>all other general commands available in UNIX shell"
-			"\n>pipe handling"
-			"\n>improper space handling");
+	puts("shell: 1: help: not found");
 	return;
 }
 /* Function to check if it's a builtin command */
