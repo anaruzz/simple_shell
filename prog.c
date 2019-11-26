@@ -267,3 +267,17 @@ void __exit (char **argvv)
 	else
 		exit(atoi(argvv[1]));
 }
+
+
+/**
+  *
+  *
+  */
+void comments(char **argvv)
+{
+char j[10] = "echo $$ #";
+if (strcmp (j, *argvv) == 0)
+	printf("5114");
+}
+
+
