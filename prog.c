@@ -4,7 +4,8 @@
 #include <unistd.h>                             
 #include <sys/types.h>                          
 #include <sys/wait.h>                           
-#include <sys/stat.h>                           
+#include <sys/stat.h>   
+#include "shell.h"
 #define BUFFER_LEN 1024                         
 
 /**                                             
