@@ -79,12 +79,11 @@ while (token != NULL)
 	{
   token = concat_all(token, "/");
   token = concat_all(token, av);
-	printf("%s\n", token);
 }
 
 }
 
-  return (av);
+  return (NULL);
 }
 
 /**
@@ -135,41 +134,49 @@ void helpsection()
 	return;
 }
 /* Function to execute builtin commands */
-int builtins(char** argvv)
+int check_builtin(char *argvv)
 {
-	int i, k = 0;
-	char* cm[4];
-	char* username;
+	int i = 0;
+	char *cm[4];
 	cm[0] = "exit";
 	cm[1] = "cd";
 	cm[2] = "help";
 	cm[3] = "env";
-	for (i = 0; i < 4; i++) {
-		if (strcmp(argvv[0], cm[i]) == 0) {
-			k = i + 1;
-			break;
-		}
+	while (i < 4)
+	{
+		if (strcmp(argvv, cm[i]) == 0)
+		{
+		return (i + 1);
+	  }
+		else
+		i++;
+
 	}
-	switch (k) {
+  return (-1);
+}
+
+void builtins(char **argvv, int i)
+{
+	char *username;
+
+	switch (i) {
 		case 1:
-			printf("\nGoodbye\n");
 			exit(0);
+			return;
 		case 2:
 			chdir(argvv[1]);
-			return 1;
+			return;
 		case 3:
 			helpsection();
-			return 1;
+			return;
 		case 4:
 			username = getenv("USER");
-			printf("\nHello %s.\nMind that this is "
-					"not a place to play around."
-					"\nUse help to know more..\n", username);
-			return 1;
+			printf("%s\n", username);
+			return;
 		default:
 			break;
 	}
-	return 0;
+
 }
 
 
@@ -180,7 +187,7 @@ int builtins(char** argvv)
  */
 int main(void)
 {
-	int bufsize = BUFFER_LEN, pid = 0, read;
+	int bufsize = BUFFER_LEN, pid = 0, read, i;
 	char **argvv = malloc(sizeof(char) * bufsize);
 	char *line = NULL;
 	size_t length = 0;
@@ -213,7 +220,12 @@ int main(void)
 		tokenize(line, argvv, bufsize);
 /*if it's not a builtin or an alias*/
 /*look for path*/
-
+i = check_builtin(argvv[0]);
+if (i >= 0)
+{
+	builtins(argvv, i);
+return (0);
+}
 // if (find_path(argvv[0]) == NULL)
 // {
 // 	perror("command: not found\n");
@@ -221,9 +233,12 @@ int main(void)
 // }
 // else
 argvv[0] = find_path(argvv[0]);
+if (argvv[0] == NULL)
+{
+	perror("command: not found\n");
+	exit(127);
+}
 
-// if (builtins(argvv))
-// 	return 0;
 
 		pid = fork();
 		if (pid == 0)
