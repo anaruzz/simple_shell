@@ -162,6 +162,32 @@ char *s = *environ;
 
 }
 
+/**
+* change_dir - change directory with builtin cd
+* argvv: array of string arguments
+*Return: Void
+*/
+void change_dir (char **argvv)
+{
+	char *pth;
+	int i, j;
+	if (argvv[1] == NULL)
+	pth = getenv("HOME");
+	else if (strcmp(argvv[1], "-") == 0)
+{
+	pth = getenv("PWD");
+	for (i = 0; pth[i]; i++)
+	;
+	for (j = i; pth[j] != '/'; j--)
+	;
+	if (pth[j] == '/')
+	pth[j] = '\0';
+}
+		if (chdir(pth) == -1)
+	perror("cd: can't cd to directory");
+	setenv("PWD", pth, 1);
+}
+
 /* Function to execute builtin */
 /**
 * builtins - execute builtins
@@ -177,8 +203,7 @@ switch (i)
 		exit(0);
 		break;
 	case 2:
-		if (chdir(argvv[1]) == -1)
-		perror("cd: can't cd to directory");
+   change_dir(argvv);
 		break;
 	case 3:
 		puts("shell: 1: help: not found");
