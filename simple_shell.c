@@ -133,7 +133,7 @@ void helpsection()
 			"\n>improper space handling");
 	return;
 }
-/* Function to execute builtin commands */
+/* Function to check if it's a builtin command */
 int check_builtin(char *argvv)
 {
 	int i = 0;
@@ -145,19 +145,34 @@ int check_builtin(char *argvv)
 	while (i < 4)
 	{
 		if (strcmp(argvv, cm[i]) == 0)
-		{
 		return (i + 1);
-	  }
 		else
 		i++;
-
 	}
   return (-1);
 }
 
+/* Print Environment variables*/
+
+void print_env(void)
+{
+	extern char **environ;
+  int i = 1;
+	char *s = *environ;
+
+	  for (; s; i++)
+		{
+	    printf("%s\n", s);
+	    s = environ[i];
+	  }
+
+}
+
+/* Function to execute builtin */
+
 void builtins(char **argvv, int i)
 {
-	char *username;
+
 
 	switch (i) {
 		case 1:
@@ -170,8 +185,7 @@ void builtins(char **argvv, int i)
 			helpsection();
 			return;
 		case 4:
-			username = getenv("USER");
-			printf("%s\n", username);
+	   print_env();
 			return;
 		default:
 			break;
