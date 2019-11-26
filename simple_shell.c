@@ -183,6 +183,8 @@ void change_dir (char **argvv)
 	if (pth[j] == '/')
 	pth[j] = '\0';
 }
+else
+pth = argvv[1];
 		if (chdir(pth) == -1)
 	perror("cd: can't cd to directory");
 	setenv("PWD", pth, 1);
@@ -283,7 +285,7 @@ while (1)
 i = check_builtin(argvv[0]);
 if (i >= 0)
 builtins(argvv, i);
-else //
+else
 {
 argvv[0] = find_path(argvv[0]);
 if (argvv[0] == NULL)
