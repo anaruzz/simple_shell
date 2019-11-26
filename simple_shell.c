@@ -5,6 +5,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
+#include <signal.h>
 #define BUFFER_LEN 1024
 
 /**
@@ -41,7 +42,15 @@ result[k] = '\0';
 return (result);
 }
 
-
+/**
+  *
+  */
+void sig_handler(int __attribute__((unused)) signum)
+{
+	signal(SIGINT, sig_handler);
+	printf("unable to interrupt");
+	fflush(stdout);
+}
 
 /**
 * find_path - find the path of the command
@@ -53,6 +62,7 @@ char *find_path(char *av)
 char *path = NULL, *token = NULL, *cpath = NULL;
 int i = 0, len = 0;
 struct stat sfile;
+
 
 path = getenv("PATH");
 for (len = 0; path[len]; len++)
@@ -202,7 +212,7 @@ void builtins(char **argvv, int i)
 switch (i)
 {
 	case 1:
-		exit(0);
+		exit(atoi(argvv[1]));
 		break;
 	case 2:
    change_dir(argvv);
@@ -262,6 +272,7 @@ if (!argvv)
 	perror("failed to allocate memory for tokens\n");
 	exit(EXIT_FAILURE);
 }
+signal(SIGINT, sig_handler);
 while (1)
 {
 	printf("$ ");
