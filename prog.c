@@ -253,3 +253,17 @@ void execute(char **argvv)
 	else
 		wait(NULL);
 }
+
+
+/**
+  * __exit - exit with status given in arguments
+  * @argvv:array of strings to execute builtin
+  *Return: Void
+ */
+void __exit (char **argvv)
+{
+	if (argvv[1] == NULL)
+		exit(0);
+	else
+		exit(atoi(argvv[1]));
+}
