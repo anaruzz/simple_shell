@@ -1,6 +1,19 @@
 #include "shell.h"
 
 /**
+ * sig_handler - checks if Ctrl C is pressed
+ * @sig_num: int
+ */
+void sig_handler(int sig_num)
+{
+	if (sig_num == SIGINT)
+	{
+		write(1, "\n$ ", 3);
+	}
+}
+
+
+/**
 *main - main program for the shell project
 *
 *Return: 0
@@ -12,7 +25,7 @@ char **argvv;
 char *line;
 struct stat sfile;
 
-
+signal(SIGINT, sig_handler);
 while (1)
 {
 write(STDOUT_FILENO, "$ ", 2);

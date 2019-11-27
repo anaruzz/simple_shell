@@ -19,7 +19,6 @@ void builtins(char **argvv, int i);
 void exec_command(char **argvv);
 void __exit(char **argvv);
 void change_dir(char **argvv);
-void signal_handler(__attribute__((unused)) int sig_num);
 int _strcmp(char *s1, char *s2);
 int _atoi(char *s);
 int _strlen(char *s);
