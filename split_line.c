@@ -9,7 +9,7 @@ char **split_line(char *line, int bufsize)
 {
 char *token = NULL;
 int     i = 0;
-char **argvv = malloc(sizeof(char) * bufsize);
+char **argvv = malloc(sizeof(char *) * bufsize);
 if (!argvv)
 {
 write(STDERR_FILENO, "hsh: allocation error\n", 22);
@@ -35,8 +35,9 @@ write(STDERR_FILENO, "hsh: allocation error\n", 22);
 exit(EXIT_FAILURE);
 }
 }
+
 }
 argvv[i] = NULL;
-free(token);
+
 return (argvv);
 }

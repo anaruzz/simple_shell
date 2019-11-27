@@ -8,7 +8,7 @@
 */
 char *read_line(void)
 {
-char *line = NULL;
+char *line = NULL, *x ="\n";
 size_t length = 0;
 int read;
 
@@ -16,7 +16,7 @@ read = getline(&line, &length, stdin);
 if (read == EOF)
 {
 free(line);
-write(STDERR_FILENO, "\n", 1);
+write(1, x, 1);
 exit(0);
 }
 if (read == -1)
