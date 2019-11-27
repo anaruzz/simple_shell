@@ -7,6 +7,79 @@
 #include <signal.h>
 #include "shell.h"
 
+
+/**
+ * _realloc - reallocates a memory block using malloc and free.
+ * @ptr: pointer to previously allocated memory
+ * @old_size: size of allocated space for ptr
+ * @new_size: size of newly allocated space
+ *
+ * Return: pointer or NULL
+ */
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
+{
+char *pointer;
+unsigned int i, max = new_size;
+char *old_pointer = ptr;
+
+if (ptr == NULL)
+{
+pointer = malloc(new_size);
+return (pointer);
+}
+else if (new_size == 0)
+{
+free(ptr);
+return (NULL);
+}
+else if (new_size == old_size)
+return (ptr);
+
+pointer = malloc(new_size);
+if (pointer == NULL)
+return (NULL);
+if (new_size > old_size)
+max = old_size;
+for (i = 0; i < max; i++)
+pointer[i] = old_pointer[i];
+free(ptr);
+return (pointer);
+}
+
+/**
+* _getenv - get an environment variable
+* @env: environment in args
+* Return: pointer to char
+*/
+
+char *_getenv(char *env)
+{
+	int i, j;
+	char *val;
+
+	if (!env)
+		return (0);
+	for (i = 0; environ[i]; i++)
+	{
+		j = 0;
+		if (env[j] == environ[i][j])
+		{
+			while (env[j])
+			{
+				if (env[j] != environ[i][j])
+					break;
+				j++;
+			}
+			if (env[j] == '\0')
+			{
+				val = (environ[i] + j + 1);
+				return (val);
+			}
+		}
+	}
+	return (0);
+}
+
 /**
  * find_path - find the path of the command
  * @av: the command to look for its path
@@ -18,10 +91,9 @@ char *find_path(char *av)
 	int i = 0, len = 0;
 	struct stat sfile;
 
-	path = getenv("PATH");
+	path = _getenv("PATH");
 	for (len = 0; path[len]; len++)
 		;
-
 	cpath = malloc(sizeof(char) * len + 1);
 
 	for (i = 0; path[i]; i++)
