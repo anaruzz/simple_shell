@@ -8,7 +8,7 @@
 #include "shell.h"
 
 /**
- * find_path - finsd the path of the command
+ * find_path - find the path of the command
  * @av: the command to look for its path
  *Return: string: full path of the command
  */
