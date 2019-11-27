@@ -1,15 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <sys/stat.h>
-#include <signal.h>
 #include "shell.h"
-
-
-
 
 /**
 *main - main program for the shell project
@@ -22,33 +11,28 @@ int bufsize = BUFFER_LEN, read, i;
 char **argvv = malloc(sizeof(char) * bufsize);
 char *line = NULL;
 size_t length = 0;
-
 if (!argvv)
 {
-	perror("failed to allocate memory for tokens\n");
+	 write(STDERR_FILENO, "hsh: allocation error\n", 22);
 	exit(EXIT_FAILURE);
 }
-/*signal(SIGINT, sig_handler);*/
 while (1)
 {
-	printf("$ ");
+	write(STDOUT_FILENO, "$ ", 2);
 	if ((read = getline(&line, &length, stdin)) == EOF)
 	{
-		printf("\n");
+		write(STDERR_FILENO, "\n", 1);
 		exit(0);
 	}
 	if (read == -1)
 	{
-		fprintf(stderr, "lsh: unable to read command\n");
+		write(STDERR_FILENO, "hsh: unable to read command\n", 29);
 		exit(EXIT_FAILURE);
 	}
-
-	length = strlen(line);
+	length = _strlen(line);
 	if (line[length - 1] == '\n')
 		line[length - 1] = '\0';
-
 	tokenize(line, argvv, bufsize);
-
 i = check_builtin(argvv[0]);
 if (i >= 0)
 builtins(argvv, i);
@@ -56,10 +40,7 @@ else
 {
 argvv[0] = find_path(argvv[0]);
 if (argvv[0] == NULL)
-{
-perror("command: not found\n");
-exit(127);
-}
+perror(argvv[0]);
 execute(argvv);
 }
 }

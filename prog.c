@@ -1,50 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
+#include <signal.h>
 #include "shell.h"
 
-
-/**
- * concat_all - concatenate two strings
- * @s1: string
- * @s2: string
- *Return: string
- */
-char *concat_all(char *s1, char *s2)
-{
-	char *result = NULL;
-	int l1 = 0, l2 = 0, i = 0, k = 0;
-
-	for (l1 = 0; s1[l1]; l1++)
-		;
-
-	for (l2 = 0; s2[l2]; l2++)
-		;
-
-	result = malloc(sizeof(char) * (l1 + l2 + 1));
-	if (!result)
-		return (NULL);
-
-	for (i = 0; s1[i]; i++)
-		result[i] = s1[i];
-	k = i;
-
-	for (i = 0; s2[i]; i++)
-		result[k + i] = s2[i];
-	k = k + i;
-
-	result[k] = '\0';
-
-	return (result);
-}
-
-
-
-
+// void sigHandler(int __attribute__((unused))  sig_num)
+// {
+//
+//     signal(SIGINT, sigHandler);
+//
+//    write(STDOUT_FILENO, "\n", 1);
+//  }
 
 
 /**
@@ -118,12 +87,12 @@ void tokenize(char *line, char **argvv, int bufsize)
 			argvv = realloc(argvv, bufsize * sizeof(char *));
 			if (!argvv)
 			{
-				perror("tokenize fail");
+       write(STDERR_FILENO, "hsh: allocation error\n", 22);
 				exit(EXIT_FAILURE);
 			}
 		}
 	}
-	argvv[i] = '\0';
+	argvv[i] = NULL;
 }
 
 /**
@@ -142,7 +111,7 @@ int check_builtin(char *argvv)
 	cm[3] = "env";
 	while (i < 4)
 	{
-		if (strcmp(argvv, cm[i]) == 0)
+		if (_strcmp(argvv, cm[i]) == 0)
 			return (i + 1);
 		else
 			i++;
@@ -183,7 +152,7 @@ void change_dir (char **argvv)
 	int i, j;
 	if (argvv[1] == NULL)
 		pth = getenv("HOME");
-	else if (strcmp(argvv[1], "-") == 0)
+	else if (_strcmp(argvv[1], "-") == 0)
 	{
 		pth = getenv("PWD");
 		for (i = 0; pth[i]; i++)
@@ -196,7 +165,7 @@ void change_dir (char **argvv)
 	else
 		pth = argvv[1];
 	if (chdir(pth) == -1)
-		perror("cd: can't cd to directory");
+		perror("lsh");
 	setenv("PWD", pth, 1);
 }
 
@@ -210,7 +179,7 @@ void __exit (char **argvv)
 	if (argvv[1] == NULL)
 		exit(0);
 	else
-		exit(atoi(argvv[1]));
+		exit(_atoi(argvv[1]));
 }
 
 
@@ -232,7 +201,7 @@ void builtins(char **argvv, int i)
 			change_dir(argvv);
 			break;
 		case 3:
-			puts("shell: 1: help: not found");
+			puts("shell: help: not found");
 			break;
 		case 4:
 			print_env();
@@ -280,6 +249,6 @@ void execute(char **argvv)
 void comments(char **argvv)
 {
 char j[10] = "echo $$ #";
-if (strcmp (j, *argvv) == 0)
+if (_strcmp (j, *argvv) == 0)
 	printf("5114");
 }
