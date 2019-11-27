@@ -1,6 +1,6 @@
 #include "shell.h"
 /**
-* print_env - prints all environment variables
+* print_env - prints all the environment variables
 *
 *Return: Void
 */
