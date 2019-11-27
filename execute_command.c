@@ -1,6 +1,6 @@
 #include "shell.h"
 /**
- * exec_command - execute command
+ * exec_command - execute commands
  * @argvv: array of strings to check
  *Return: void
  */
