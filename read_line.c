@@ -15,11 +15,13 @@ int read;
 read = getline(&line, &length, stdin);
 if (read == EOF)
 {
+free(line);
 write(STDERR_FILENO, "\n", 1);
 exit(0);
 }
 if (read == -1)
 {
+free(line);
 write(STDERR_FILENO, "hsh: unable to read command\n", 29);
 exit(EXIT_FAILURE);
 }

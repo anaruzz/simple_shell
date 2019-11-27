@@ -33,7 +33,7 @@ j++;
  * argvv: array of string arguments
  *Return: Void
  */
-void change_dir (char **argvv)
+void change_dir(char **argvv)
 {
 	char *pth;
 	int i, j;
@@ -61,12 +61,18 @@ void change_dir (char **argvv)
   * @argvv:array of strings to execute builtin
   *Return: Void
  */
-void __exit (char **argvv)
+void __exit(char **argvv)
 {
 	if (argvv[1] == NULL)
-		exit(0);
+  {
+free(argvv);
+  	exit(0);
+  }
 	else
+  {
+    free(argvv);
 		exit(_atoi(argvv[1]));
+}
 }
 
 
@@ -82,6 +88,7 @@ void builtins(char **argvv, int i)
 	switch (i)
 	{
 		case 1:
+
 			__exit(argvv);
 			break;
 		case 2:

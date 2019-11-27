@@ -12,7 +12,7 @@
 #define BUFFER_LEN 1024
 char *concat_all(char *s1, char *s2);
 char *find_path(char *av);
-void split_line(char *line, char **argvv, int bufsize);
+char **split_line(char *line, int bufsize);
 int check_builtin(char *argvv);
 void print_env(void);
 void builtins(char **argvv, int i);

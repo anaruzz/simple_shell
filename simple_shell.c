@@ -19,14 +19,7 @@ write(STDOUT_FILENO, "$ ", 2);
 
 line = read_line();
 
-argvv = malloc(sizeof(char) * bufsize);
-if (!argvv)
-{
-write(STDERR_FILENO, "hsh: allocation error\n", 22);
-exit(EXIT_FAILURE);
-}
-
-split_line(line, argvv, bufsize);
+argvv = split_line(line, bufsize);
 
 i = check_builtin(argvv[0]);
 if (i >= 0)
@@ -37,11 +30,13 @@ if (stat(argvv[0], &sfile) != 0)
 {
 argvv[0] = find_path(argvv[0]);
 if (argvv[0] == NULL)
+{
 perror(argvv[0]);
+free(argvv);
+}
 }
 
 exec_command(argvv);
-
 }
 }
 free(argvv);
