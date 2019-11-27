@@ -29,8 +29,6 @@ bufsize += BUFFER_LEN;
 argvv = _realloc(argvv, sizeof(argvv), bufsize *sizeof(char *));
 if (!argvv)
 {
-free(argvv);
-free(token);
 write(STDERR_FILENO, "hsh: allocation error\n", 22);
 exit(EXIT_FAILURE);
 }
