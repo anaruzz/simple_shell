@@ -1,13 +1,12 @@
 #include "shell.h"
 /**
- * exec_command - execute commands
+ * exec_command - execute command
  * @argvv: array of strings to check
  *Return: void
  */
 void exec_command(char **argvv)
 {
 	int pid = 0;
-
 	pid = fork();
 	if (pid == 0)
 	{

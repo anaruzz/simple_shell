@@ -1,7 +1,6 @@
 #include "shell.h"
 
 /**
-*sig_handler - main program for the simple shell project
 * sig_handler - checks if Ctrl C is pressed
 * @sig_num: int
 */
@@ -13,7 +12,8 @@ write(1, "\n$ ", 3);
 
 
 /**
-*main - main program for the simple shell project
+*main - main program for the shell project
+*
 *Return: 0
 */
 int main(void)
@@ -22,11 +22,14 @@ int bufsize = BUFFER_LEN, i;
 char **argvv;
 char *line;
 struct stat sfile;
+
 signal(SIGINT, sig_handler);
 while (1)
 {
 write(STDOUT_FILENO, "$ ", 2);
+
 line = read_line();
+
 argvv = split_line(line, bufsize);
 i = check_builtin(argvv[0]);
 if (i >= 0)
@@ -46,6 +49,7 @@ free(argvv);
 exec_command(argvv);
 }
 }
+free(line);
 free(argvv);
 return (0);
 }
