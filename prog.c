@@ -7,15 +7,6 @@
 #include <signal.h>
 #include "shell.h"
 
-// void sigHandler(int __attribute__((unused))  sig_num)
-// {
-//
-//     signal(SIGINT, sigHandler);
-//
-//    write(STDOUT_FILENO, "\n", 1);
-//  }
-
-
 /**
  * find_path - find the path of the command
  * @av: the command to look for its path
@@ -63,7 +54,7 @@ free(cpath);
 
 /**
  * check_builtin - check if the string passed is a builtin
- * @argvv[0]: string to check
+ * @argvv: string to check
  *Return: -1 on falure & >= 1 on success
  */
 int check_builtin(char *argvv)
@@ -79,7 +70,7 @@ int check_builtin(char *argvv)
 	{
 		if (_strcmp(argvv, cm[i]) == 0)
 			return (i + 1);
-		else
+
 			i++;
 	}
 	return (-1);
@@ -87,13 +78,13 @@ int check_builtin(char *argvv)
 
 
 /**
-  *comments - handle the shell comments
-  *@argvv: array of string
-  *Return: void
+  * comments - handle the shell comments
+  * @argvv: array of string
+  * Return: void
   */
 void comments(char **argvv)
 {
 char j[10] = "echo $$ #";
-if (_strcmp (j, *argvv) == 0)
+if (_strcmp(j, *argvv) == 0)
 	printf("5114");
 }
