@@ -1,7 +1,6 @@
 #include "shell.h"
-
 /**
-* split_line - parse the input string
+* split_line - parses the input string
 * @line: string
 * @bufsize: size of buffer for allocation
 *Return: void
