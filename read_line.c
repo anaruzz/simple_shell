@@ -8,7 +8,7 @@
 */
 char *read_line(void)
 {
-char *line = NULL, *x ="\n";
+char *line = NULL, *x = "\n";
 size_t length = 0;
 int read;
 
