@@ -2,7 +2,7 @@
 #include "shell.h"
 
 /**
-* read_line - read a line from input
+* read_line - it reads a line from input
 *
 * Return: string read
 */
