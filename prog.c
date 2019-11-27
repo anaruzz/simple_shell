@@ -70,8 +70,7 @@ int check_builtin(char *argvv)
 	{
 		if (_strcmp(argvv, cm[i]) == 0)
 			return (i + 1);
-
-			i++;
+	i++;
 	}
 	return (-1);
 }

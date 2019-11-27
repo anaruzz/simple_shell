@@ -10,12 +10,18 @@
 void print_env(void)
 {
 	extern char **environ;
-	int i;
+	int i, j;
 	char *s = *environ;
 
 	for (i = 1; s != NULL; i++)
 	{
-		printf("%s\n", s);
+    j = 0;
+    while (s[j])
+    {
+		write(1, &s[j], 1);
+j++;
+  }
+  write(1, "\n", 1);
 		s = environ[i];
 	}
 
