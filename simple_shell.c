@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
-*main - main program for the shell project
+*main - main program for the simple shell project
 *
 *Return: 0
 */
@@ -11,16 +11,11 @@ int bufsize = BUFFER_LEN, i;
 char **argvv;
 char *line;
 struct stat sfile;
-
-
 while (1)
 {
 write(STDOUT_FILENO, "$ ", 2);
-
 line = read_line();
-
 argvv = split_line(line, bufsize);
-
 i = check_builtin(argvv[0]);
 if (i >= 0)
 builtins(argvv, i);
