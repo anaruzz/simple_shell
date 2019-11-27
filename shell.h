@@ -12,16 +12,17 @@
 #define BUFFER_LEN 1024
 char *concat_all(char *s1, char *s2);
 char *find_path(char *av);
-void tokenize(char *line, char **argvv, int bufsize);
+void split_line(char *line, char **argvv, int bufsize);
 int check_builtin(char *argvv);
 void print_env(void);
 void builtins(char **argvv, int i);
-void execute(char **argvv);
+void exec_command(char **argvv);
 void __exit (char **argvv);
 void change_dir (char **argvv);
 void signal_handler(__attribute__((unused)) int sig_num);
 int _strcmp(char *s1, char *s2);
 int _atoi(char *s);
 int _strlen(char *s);
+char * read_line();
 
 #endif
