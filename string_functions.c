@@ -17,7 +17,7 @@ return (i);
 
 
 /**
- * _atoi - converts a string to an integer
+ * _atoi - it converts a string to an integer
  * @s: string to convert
  * Return: integer
  */
