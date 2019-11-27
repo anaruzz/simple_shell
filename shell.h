@@ -8,8 +8,8 @@
 #include<sys/wait.h>
 #include <sys/stat.h>
 #define BUFFER_LEN 1024
+extern char **environ;
 
-#define BUFFER_LEN 1024
 char *concat_all(char *s1, char *s2);
 char *find_path(char *av);
 char **split_line(char *line, int bufsize);

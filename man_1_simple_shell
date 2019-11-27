@@ -2,15 +2,15 @@
 
 
 .SH NAME
-.B Simple Shell 
+.B Simple Shell
 - command interpreter (shell)
 
 .SH SYNOPSIS
-simple_shell 
+simple_shell
 
 
 .SH DESCRIPTION
-Simple shell is a sample of shell with similar outputs 
+Simple shell is a sample of shell with similar outputs
 
 
 
@@ -26,7 +26,7 @@ it Changes the current directory of the process.
 .B env
 it prints the current environment
 
-.B exit 
+.B exit
 it exits the shell
 
 .B help
