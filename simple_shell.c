@@ -26,6 +26,7 @@ struct stat sfile;
 signal(SIGINT, sig_handler);
 while (1)
 {
+if (isatty(STDIN_FILENO) == 1)
 write(STDOUT_FILENO, "$ ", 2);
 
 line = read_line();
@@ -49,7 +50,7 @@ free(argvv);
 exec_command(argvv);
 }
 }
-free(line);
 free(argvv);
+
 return (0);
 }

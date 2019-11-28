@@ -2,27 +2,26 @@
 #include "shell.h"
 
 /**
-* read_line - it reads a line from input
+* read_line - read a line from input
 *
 * Return: string read
 */
 char *read_line(void)
 {
-char *line = NULL, *x = "\n";
+char *line = NULL;
 size_t length = 0;
 int read;
 
 read = getline(&line, &length, stdin);
-if (read == EOF)
+// if (read == EOF)
+// {
+// exit(0);
+// }
+if (read == -1)
 {
-write(1, x, 1);
 exit(0);
 }
-if (read == -1)
-exit(0);
-
-if (line[length - 1] == '\n')
-line[length - 1] = '\0';
+line = strtok(line, "\n");
 
 return (line);
 }
