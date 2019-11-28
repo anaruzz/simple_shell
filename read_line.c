@@ -19,10 +19,8 @@ write(1, x, 1);
 exit(0);
 }
 if (read == -1)
-{
-exit(EXIT_FAILURE);
-}
-length = _strlen(line);
+exit(0);
+
 if (line[length - 1] == '\n')
 line[length - 1] = '\0';
 
