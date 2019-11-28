@@ -15,6 +15,8 @@ int read;
 read = getline(&line, &length, stdin);
 if (read == -1)
 {
+if (isatty(STDIN_FILENO))
+write(1, "\n", 1);
 exit(0);
 }
 line = strtok(line, "\n");
