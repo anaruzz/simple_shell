@@ -49,7 +49,7 @@ else
 pth = argvv[1];
 if (chdir(pth) == -1)
 perror("lsh");
-setenv("PWD", pth, 1);
+getenv("PWD");
 }
 
 /**

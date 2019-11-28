@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "shell.h"
-
+#include <string.h>
 /**
 * read_line - read a line from input
 *
@@ -13,10 +13,6 @@ size_t length = 0;
 int read;
 
 read = getline(&line, &length, stdin);
-// if (read == EOF)
-// {
-// exit(0);
-// }
 if (read == -1)
 {
 exit(0);
