@@ -9,13 +9,13 @@
 
 
 /**
- * _realloc - reallocates a memory block using malloc and free.
- * @ptr: pointer to previously allocated memory
- * @old_size: size of allocated space for ptr
- * @new_size: size of newly allocated space
- *
- * Return: pointer or NULL
- */
+* _realloc - reallocates a memory block using malloc and free.
+* @ptr: pointer to previously allocated memory
+* @old_size: size of allocated space for ptr
+* @new_size: size of newly allocated space
+*
+* Return: pointer or NULL
+*/
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
 {
 char *pointer;
@@ -54,54 +54,52 @@ return (pointer);
 
 char *_getenv(char *env)
 {
-	int i, j;
-	char *val;
+int i, j;
+char *val;
 
-	if (!env)
-		return (0);
-	for (i = 0; environ[i]; i++)
-	{
-		j = 0;
-		if (env[j] == environ[i][j])
-		{
-			while (env[j])
-			{
-				if (env[j] != environ[i][j])
-					break;
-				j++;
-			}
-			if (env[j] == '\0')
-			{
-				val = (environ[i] + j + 1);
-				return (val);
-			}
-		}
-	}
-	return (0);
+if (!env)
+return (0);
+for (i = 0; environ[i]; i++)
+{
+j = 0;
+if (env[j] == environ[i][j])
+{
+while (env[j])
+{
+if (env[j] != environ[i][j])
+break;
+j++;
+}
+if (env[j] == '\0')
+{
+val = (environ[i] + j + 1);
+return (val);
+}
+}
+}
+return (0);
 }
 
 
-
-
 /**
- * check_builtin - check if the string passed is a builtin
- * @argvv: string to check
- *Return: -1 on falure & >= 1 on success
- */
+* check_builtin - check if the string passed is a builtin
+* @argvv: string to check
+*Return: -1 on falure & >= 1 on success
+*/
 int check_builtin(char *argvv)
 {
-	int i = 0;
-	char *cm[4];
+int i = 0;
+char *cm[4];
 
-	cm[0] = "exit";
-	cm[1] = "cd";
-	cm[2] = "help";
-	cm[3] = "env";
-	while (i < 4)
-	{
-		if (_strcmp(argvv, cm[i]) == 0)
-			return (i + 1);
-	i++;
-	}
-	return (-1);
+cm[0] = "exit";
+cm[1] = "cd";
+cm[2] = "help";
+cm[3] = "env";
+while (i < 4)
+{
+if (_strcmp(argvv, cm[i]) == 0)
+return (i + 1);
+i++;
+}
+return (-1);
 }
